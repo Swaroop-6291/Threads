@@ -1,14 +1,14 @@
 
 import ThreadCard from "@/components/cards/ThreadCard";
-import { fetchPost } from "@/lib/actions/thread.actions";
-import { fetchUser } from "@/lib/actions/user.actions";
+import { fetchPosts } from "@/lib/actions/thread.actions";
+
 import { UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 
 export default async function Home() {
-  const result=await fetchPost(1,30)
+  const result=await fetchPosts(1,30)
   const user=await currentUser()
   
 
@@ -22,11 +22,11 @@ export default async function Home() {
       Home
     </h1>
     <section className="mt-9 flex flex-col gap-10">
-       {result?.posts.map((post)=>(
+       {result?.posts.map((post:any)=>(
          <ThreadCard
            key={post._id}
            id={post._id}
-           currentUserId={user?.id || ''}
+           currentUserId={user?.id || null}
            parentId={post.parentId}
            content={post.text}
            author={post.author}

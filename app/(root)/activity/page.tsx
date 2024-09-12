@@ -1,5 +1,5 @@
 import UsersCard from "@/components/cards/UsersCard";
-import { fetchUser, fetchUsers, getActivities } from "@/lib/actions/user.actions";
+import { fetchUser, fetchUsers, getActivity } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs/server"
 import Image from "next/image";
 import Link from "next/link";
@@ -12,14 +12,14 @@ const page = async () => {
     const userInfo= await fetchUser(user.id);
     if(!userInfo?.onboarded)redirect('/onboarding')
 
-    const activity=await getActivities(userInfo._id)
+    const activity=await getActivity(userInfo._id)
     return (
       <section>
           <h1 className='head-text mb-10'>Activity</h1>
           <section className="mt-10 flex flex-col gap-5">
              {activity.length > 0 ? (
                 <>
-                  {activity.map((activity)=>(
+                  {activity.map((activity:any)=>(
                      <Link key={activity._id} href={`/thread/${activity.parentId}`}>
                        <article className="activity-card">
                           <Image

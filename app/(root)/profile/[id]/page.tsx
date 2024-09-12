@@ -4,16 +4,18 @@ import ThreadsTab from "@/components/shared/ThreadsTab";
 import { Tabs,TabsContent,TabsList,TabsTrigger } from "@/components/ui/tabs";
 import { profileTabs } from "@/constants";
 import { fetchUser } from "@/lib/actions/user.actions";
-import { currentUser } from "@clerk/nextjs/server"
+import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { redirect } from "next/navigation"
 
 const page =async ({params}:{params:{
     id:string
 }}) => {
-  const user=await currentUser()
+  const user=await currentUser();
   if(!user)return null;
+  const actualUser=await fetchUser(user.id);
   const userInfo=await fetchUser(params.id)
+  if(!userInfo)redirect('/onboarding')
   return (
     <section>
         <ProfileHeader
